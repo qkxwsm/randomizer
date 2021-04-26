@@ -1,0 +1,58 @@
+<html>
+
+<header>
+  <h1>Randomizer</h1>
+</header>
+
+<body>
+    Input:
+    <form id="formElem">
+        <textarea type="text" name="word" rows="16" cols="192"></textarea>
+        <br>
+        <select name="action">
+            <option value="capitalize">Capitalize</option>
+            <option value="emojify">Emojify</option>
+            <option value="flagify">Flagify</option>
+            <option value="decode">Decode</option>
+        </select>
+    </form>
+    <button id="capitalize">Go!</button>
+    <hr>
+    Output:
+    <textarea readonly id="result" rows="16" cols="192"></textarea>
+</body>
+
+<!-- <footer>
+  <p>Made by David Hu</p>
+</footer> -->
+
+<script>
+capitalize.onclick = async (e) => {
+    var form = document.querySelector("#formElem");
+    // var form = document.forms[0];
+
+    data = {
+        word : form.querySelector('textarea[name="word"]').value,
+        action : form.querySelector('select[name="action"]').value,
+    }
+
+    let response = await fetch('https://3k26s4xt0a.execute-api.us-west-2.amazonaws.com/randomizeapi', {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+
+    var rec = await response.json();
+    // console.log(typeof rec);
+    var mp = JSON.parse(rec);
+    // console.log(typeof mp);
+    var str = mp.result;
+    // let text = await response.text(); // read response body as text
+    document.getElementById("result").value = str;
+};
+
+</script>
+
+</html>
